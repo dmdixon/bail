@@ -22,7 +22,7 @@ options.headless = True
 
 driver = webdriver.Chrome(options=options)
 
-def Query_Case(case_number):
+def Query_Case(case_number):   #function to look up information for a given case number and output to dictionary.
     driver.get('https://sci.ccc.nashville.gov/')
     search_type=driver.find_element_by_id(id_='search-type')
     search_type.send_keys('Case Number')
@@ -53,12 +53,12 @@ def Query_Case(case_number):
     case={'case_number':case_number,'name':name,'oca_id':oca_id,'dob':dob,'case_status':case_status,'defendant_status':defendant_status,'fees':fees,'charge':charge,'bond':bond}
     return case
  
-def Query_Cases(case_numbers):
+def Query_Cases(case_numbers):   #function to look up information for a list of case numbers and output to dataframe.
     cases=[Query_Case(case_number) for case_number in case_numbers]
     cases=pd.DataFrame(list(filter(None, cases)))
     return cases
 
-def Query_Court_Schedule(date,session_type='general'):
+def Query_Court_Schedule(date,session_type='general'):   #function to look up information for court schedule on a given date and output to dataframe.
     if session_type=='general':
         driver.get('https://sci.ccc.nashville.gov/Reporting/GeneralSessionsScheduledAppearance')
     elif session_type=='trial':
@@ -76,11 +76,11 @@ def Query_Court_Schedule(date,session_type='general'):
     trials=pd.read_html(str(table))[0]  
     return trials
 
-def Query_Court_Schedules(dates,session_type='general'):
+def Query_Court_Schedules(dates,session_type='general'):   #function to look up information for court schedule for a list of dates and output to dataframe.
     trials=pd.concat([Query_Court_Schedule(date,session_type) for date in dates])
     return trials
 
-def Query_Recent_Bookings():
+def Query_Recent_Bookings(): #function to look up information for recent bookings and output to dataframe.
     driver.get('http://dcso.nashville.gov/Search/RecentBookings')
     soup = BeautifulSoup(driver.page_source,'lxml')
     table = soup.find('table')   
