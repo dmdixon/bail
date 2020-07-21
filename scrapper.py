@@ -13,9 +13,7 @@ import numpy as np
 import pandas as pd
 from datetime import datetime
 from datetime import timedelta
-
-
-
+import re
 
 options = Options()
 options.headless = True
@@ -73,7 +71,12 @@ def Query_Court_Schedule(date,session_type='general'):   #function to look up in
     if soup.find('td').contents[0]=='No results for your criteria. Please search again!':
         return None
     table = soup.find('table')   
-    trials=pd.read_html(str(table))[0]  
+    trials=pd.read_html(str(table))[0] 
+    trials['Defendant']=trials['Defendant'].str.replace(', ','; ')
+    trials['Offense']=trials['Offense'].str.replace(',','')
+    trials['Court Room']=trials['Court Room'].str.replace(',','')
+    if session_type=='general':
+        trials['Judge']=trials['Judge'].str.replace(', ',' ')
     return trials
 
 def Query_Court_Schedules(dates,session_type='general'):   #function to look up information for court schedule for a list of dates and output to dataframe.
@@ -92,19 +95,25 @@ def Query_Recent_Bookings(): #function to look up information for recent booking
         driver.get(details_urls[i])
         soup = BeautifulSoup(driver.page_source,'lxml')
         charge_soup=soup.findAll('label', text='Arrested Charge')
-        charges=','.join([charge.next_sibling.strip() for charge in charge_soup])
-        charge_types=','.join([charge.find_next_sibling('br').next_sibling.strip() for charge in charge_soup])
+        charges=';'.join([charge.next_sibling.strip() for charge in charge_soup])
+        charge_types=';'.join([charge.find_next_sibling('br').next_sibling.strip() for charge in charge_soup])
         bond_soup=soup.findAll('label', text='Bond')
         bonds_list=[bond.next_sibling.strip()[1:].replace(',','') for bond in bond_soup]
-        bonds=','.join(bonds_list)
+        bonds=';'.join(bonds_list)
         total_bond=np.nansum(list(map(float,bonds_list)))
         case_number_soup=soup.findAll('label', text='Warrant')
-        case_numbers=','.join([case_number.next_sibling.strip() for case_number in case_number_soup])
-        
+        case_numbers=';'.join([case_number.next_sibling.strip() for case_number in case_number_soup])
         recent_bookings.at[i,'Number of Charges']=len(charges.split(','))
         recent_bookings.at[i,'Charges']=charges
         recent_bookings.at[i,'Charge Types']=charge_types
         recent_bookings.at[i,'Case Numbers']=case_numbers
         recent_bookings.at[i,'Bonds']=bonds 
-        recent_bookings.at[i,'Total Bond']=total_bond         
+        recent_bookings.at[i,'Total Bond']=total_bond       
+    recent_bookings['Age']=recent_bookings['Date of Birth'].str[-3:-1].astype(int)
+    recent_bookings['Inmate Name']=recent_bookings['Inmate Name'].str.replace(u'\xa0', u' ').str.replace(', ','; ')
+    recent_bookings['Date of Birth']=recent_bookings['Date of Birth'].str[:-5].str.replace(', ','; ')
+    recent_bookings['Admitted Date']=recent_bookings['Admitted Date'].str.replace(', ','; ')
+    recent_bookings['Release Date']=recent_bookings['Release Date'].str.replace(', ','; ')
+    recent_bookings['Charges']=recent_bookings['Charges'].str.replace(re.compile(r'(?<=\d),(?=\d)'),'')
+    recent_bookings['Charges']=recent_bookings['Charges'].str.replace(',','-')
     return recent_bookings
