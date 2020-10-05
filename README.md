@@ -52,7 +52,7 @@ This script holds helper functions for dataframe operations, logging errors and 
 credential.py
 This script sets up keyring password for sending email. You only need to do this if you want to distribute the report as an email notification. The default setup is to use a gmail account, so it will fail unless you use a gmail account or edit the code to use something else.
 
-	The code was developed thanks to the efforts of Code For Nashville (https://www.codefornashville.org/) and the Nashville Community Bail Fund (https://nashvillebailfund.org/). 
+The code was developed thanks to the efforts of Code For Nashville (https://www.codefornashville.org/) and the Nashville Community Bail Fund (https://nashvillebailfund.org/). 
 
 For more information about the code feel free to email me at dmdixon1992@gmail.com and I will get back with you as soon as possible. Thank you!  
 
