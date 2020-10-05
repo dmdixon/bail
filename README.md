@@ -1,6 +1,6 @@
 # NIDRAA
 
-Hello and thank you for your interest in this project! The Nashville Inmate Data Retrieval And Analysis (NIDRAA) pipeline is a set of python scripts used to regularly scrap information from the Nashville/Davidson County Sheriff’s Office website (http://dcso.nashville.gov/) and output the data in the form of tables, figures and reports. To start with the pipeline has the following dependencies.
+Hello and thank you for your interest in this project! The Nashville Inmate Data Retrieval And Analysis (NIDRAA) pipeline is a set of python scripts used to regularly scrap information from the Nashville/Davidson County Sheriff’s Office website (http://dcso.nashville.gov/) and output the data in the form of tables, figures and reports. To run with out issue be sure to download all the folders here to a single location. The foundation of pipeline is built from the following dependencies.
 
 **Python Dependencies:**
 *	numpy
