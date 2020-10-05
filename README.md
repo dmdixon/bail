@@ -20,6 +20,7 @@ Python Dependencies:
 *	bs4
 *	selenium
 *	astropy
+
 Note: Code was developed in Python 3.8
 
 Driver Dependencies:
