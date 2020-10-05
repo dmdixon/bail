@@ -17,6 +17,7 @@ if __name__=='__main__':
     if config.Web_Scrape=='Y':
         try:
             #__Web_Scraping__#
+            print('Perfoming Web Scraping...\n')
             rb=Query_Recent_Bookings(query_clerk=config.query_clerk)
             aai=Query_All_Active_Inmates(query_clerk=config.query_clerk)
             
@@ -44,7 +45,7 @@ if __name__=='__main__':
     if config.Calc_Stats=='Y':
         try:
             #__Calculating_Statistics__#
-            print('Solving Relevant Statistics...\n'+1)
+            print('Solving Relevant Statistics...\n')
             if isinstance(rb,pd.DataFrame)==False:
                 rb=pd.read_csv('../data/recent_bookings_'+starttime.strftime('%b_%d_%Y')+'.csv')
             if isinstance(aai,pd.DataFrame)==False:
