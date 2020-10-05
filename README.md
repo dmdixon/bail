@@ -28,9 +28,9 @@ It is necessary to download a Chrome Webdriver to use web scraping functions. Go
 
 **Latex Dependencies:**
 To create report and convert to pdf, pdflatex is necessary. Any distribution of Latex should work, it just depends on you OS. Go to https://www.latex-project.org/get/ and download which one you need.
-
-
-
+\
+\
+\
 The pipeline itself is made up of a set of scripts. The scripts that make it up are as follows.
 
 **scraper.py:** 
