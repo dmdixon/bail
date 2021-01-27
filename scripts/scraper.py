@@ -13,7 +13,7 @@ options = Options()
 options.headless = True
 
 driver = webdriver.Chrome(options=options)
-driver.implicitly_wait(60)
+#driver.implicitly_wait(60)
 
 def Query_Case_by_Case_Number(case_number):   #function to look up clerk court information for a given case number and output to dictionary
     #load search page for Nashville/Davidson County criminal court clerk website
