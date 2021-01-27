@@ -1,6 +1,9 @@
+import os
 import numpy as np
 import pandas as pd
 from scipy.stats import f_oneway
+from scipy.stats import kendalltau
+import statsmodels.stats.multicomp as multi
 from utils import *
 
 
@@ -13,16 +16,16 @@ def Metrics(dataframe,columns,savepath=None):
         data=dataframe[column]
         
         #__Average__Statistics__#
-        metrics.at['mean',column]=str(round(np.nanmean(data),2))
-        metrics.at['median',column]=str(np.nanmedian(data))
+        metrics.at['mean',column]='{:,.2f}'.format(np.nanmean(data))
+        metrics.at['median',column]='{:,.2f}'.format(np.nanmedian(data))
         
         #__Dispersion_Statistics__#
-        metrics.at['standard deviation',column]=str(round(np.nanstd(data),2))
-        metrics.at['iqr',column]=str(np.nanquantile(data,.75)-np.nanquantile(data,.25))
+        metrics.at['standard deviation',column]='{:,.2f}'.format(np.nanstd(data))
+        metrics.at['iqr',column]='{:,.2f}'.format(np.nanquantile(data,.75)-np.nanquantile(data,.25))
         
         #__Extrema_Statistics__#
-        metrics.at['min',column]=str(np.nanmin(data))
-        metrics.at['max',column]=str(np.nanmax(data))
+        metrics.at['min',column]='{:,.2f}'.format(np.nanmin(data))
+        metrics.at['max',column]='{:,.2f}'.format(np.nanmax(data))
     
     metrics=metrics.round(3)
     if savepath != None:
@@ -30,11 +33,18 @@ def Metrics(dataframe,columns,savepath=None):
     return metrics
 
 def Kendall_Tau(dataframe,savepath=None):
-    corr=dataframe.corr(method='kendall')
-    corr=corr.round(3)
+    corrs = pd.DataFrame()
+    
+    for index in dataframe.columns:
+        for column in dataframe.columns:
+            tau,pval=kendalltau(dataframe[index],dataframe[column])
+            if pval <1e-6:
+                corrs.at[index,column]=', '.join(['T'+': '+'{:,.3f}'.format(tau),r'p: 1e-6'])
+            else:
+                corrs.at[index,column]=', '.join(['T'+': '+'{:,.3f}'.format(tau),r'p: '+'{:.2e}'.format(pval)])
     if savepath != None:
-        corr.to_latex(savepath)
-    return corr
+        corrs.to_latex(savepath,encoding='utf-8')
+    return corrs
 
 def ANOVA_1Way(dataframe,cat_cols,distr_cols,savepath=None):
     corrs=pd.DataFrame()
@@ -42,10 +52,18 @@ def ANOVA_1Way(dataframe,cat_cols,distr_cols,savepath=None):
         for cat_col in cat_cols:
             values=dataframe[cat_col].dropna().unique().tolist()
             distr=[np.array(DCut(dataframe,[cat_col],['eq'],[value])[distr_col]) for value in values]
-            corrs.at[cat_col,distr_col]=f_oneway(*distr)[0]
-    corrs=corrs.round(3)
+            fstat,pval=f_oneway(*distr)
+            if pval < 1e6:
+                corrs.at[cat_col,distr_col]=', '.join(['F'+': '+'{:,.3f}'.format(fstat),r'p: 1e-6'])
+            else:
+                corrs.at[cat_col,distr_col]=', '.join(['F'+': '+'{:,.3f}'.format(fstat),r'p: '+'{:.2e}'.format(pval)])
+            posthoc=multi.pairwise_tukeyhsd(dataframe[distr_col],dataframe[cat_col],alpha=.05)
+            posthoc=pd.DataFrame(posthoc._results_table.data[1:], columns=posthoc._results_table.data[0])
+            if savepath != None:
+                savename=os.path.dirname(savepath)+'/'+distr_col+'_'+cat_col+'_tukeyhsd.tex'
+                posthoc.to_latex(savename.replace(' ','_'),index=False,encoding='utf-8')
     if savepath != None:
-        corrs.to_latex(savepath)
+        corrs.to_latex(savepath,encoding='utf-8')
     return corrs
 
 
@@ -60,16 +78,9 @@ def Metrics_by_Race_Sex(dataframe,columns,savepath=None):
 
 def Kendall_Tau_by_Race_Sex(dataframe,columns,savepath=None):
     dataframe=dataframe[columns]
-    corr=Kendall_Tau(dataframe)
-    if savepath != None:
-        corr.to_latex(savepath)
-    return corr
+    corrs=Kendall_Tau(dataframe,savepath)
+    return corrs
 
 def ANOVA_1Way_by_Race_Sex(dataframe,columns,savepath=None):
-   anova=ANOVA_1Way(dataframe,['Race','Sex'],columns)
-   if savepath != None:
-       anova.to_latex(savepath)
+   anova=ANOVA_1Way(dataframe,['Race','Sex'],columns,savepath)
    return anova
-            
-
-    
