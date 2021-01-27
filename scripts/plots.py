@@ -97,7 +97,7 @@ def Plot_Bar(dataframe,column,ylabel,savepath=None):
      d=dict(dataframe[column].value_counts())
      plt.figure(figsize=(14,14))
      plt.bar(list(d.keys()),list(d.values()),color='green',alpha=.3)
-     plt.legend(loc='best', fontsize=30)
+     plt.xlabel(ylabel,fontsize=30)
      plt.ylabel(ylabel,fontsize=30)
      plt.xticks(rotation=15)
      plt.tight_layout()
