@@ -1,3 +1,5 @@
+query_date=None         #Must be None or day string in month/day/year ex: 1/01/2021
+
 Web_Scrape='Y'          #Update latest files with web scraper (Y/N)?
 Calc_Stats='Y'          #Calculate relevant statistics for latest files (Y/N)?
 Plot_Dists='Y'          #Plot distributions for latest files (Y/N)?
@@ -14,5 +16,4 @@ latex_template='../misc/latex_template.tex'     #Latex template for generating r
 data_web_directory=None     #If set adds web link to online data file archive
 
 email_recipients='../misc/email_recipients.txt' #file to append recipient email addresses
-user_email=None #user email address used to send email notifications, run credential.py to set up keyring
-
+user_email=None         #user email address used to send email notifications, run credential.py to set up keyring
