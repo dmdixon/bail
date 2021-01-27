@@ -37,19 +37,18 @@ def D_Essemble(dataframe,columns):
     return d_enssemble
 
 
-def Email(user_email,password,subject,attachments,addresses):
+def Email_PDF(user_email,password,subject,attachment,addresses):
     server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
     server.ehlo()
     server.login(user_email, password)
 
-    msg = EmailMessage()
-    msg['Subject'] = subject
+    email = EmailMessage()
+    email['Subject'] = subject
 
-    for attachment in attachments:
-        with open(attachment,'r') as f:
-            msg.add_attachment(f.read())
+    with open(attachment,'rb') as f:
+        email.add_attachment(f.read(), maintype='application', subtype='pdf', filename=os.path.basename(attachment))
 
-    server.sendmail(user_email,','.join(addresses),msg.as_string())
+    server.sendmail(user_email,','.join(addresses),email.as_string())
     
 
 def Error_Log(step,trbck,stime,errfile,mxfsize=100):
