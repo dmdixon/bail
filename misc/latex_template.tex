@@ -25,7 +25,7 @@ This report is programically generated and contains statistical information abou
  At the time this report was generated <<Ninmates>> inmates are held in custody, with <<Pcdcmdf>>\% of them residing in the Correctional Development Center or the Metro Detention Facility. There is a total of <<Ncharges>> charges distributed amongst the inmates, yielding a median of <<medNcharges>> charges per inmate. The charges are split between <<Nmisd>> misdemeanors and <<Nfel>> felonies with a median total bond of <<medTbond>>. <<Ndrgoff>> of active inmates have a charge related to drugs and <<Nice>> of inmates are listed as  ICE detainees. In the last 48 hours <<Nrb>> people were taken into custody and <<Nrbrel>> have been released. <<dwd>>
 
 \section{Statistical Tables}
-This section lists statistical values concerning the active inmate dataset. Note these values may not take into account changes induced by recent bookings.
+This section lists statistical values concerning the active inmate dataset. Note these values may not take into account changes induced by recent bookings and all extremly low p-values were set to 1e-6.
 
 \begin{table}[H]
 \centering
@@ -50,6 +50,87 @@ This section lists statistical values concerning the active inmate dataset. Note
 \caption{One-Way Anova correlation test to find Race/Sex correlation with numercally typed data. Correlation strength increases approaching 1.}
 \label{Tab:anova}
 \end{table}
+
+\begin{table}[H]
+\centering
+\noindent\makebox[\textwidth]{%
+\input{../tables/Total_Bond_Race_tukeyhsd.tex}}
+\caption{TukeyHSD statistical post-hoc test for Total Bond and Race Correlation.}
+\label{Tab:thsd_TBR}
+\end{table}
+
+\begin{table}[H]
+\centering
+\noindent\makebox[\textwidth]{%
+\input{../tables/Total_Bond_Sex_tukeyhsd.tex}}
+\caption{TukeyHSD statistical post-hoc test for Total Bond and Sex Correlation.}
+\label{Tab:thsd_TBS}
+\end{table}
+
+\begin{table}[H]
+\centering
+\noindent\makebox[\textwidth]{%
+\input{../tables/Age_Race_tukeyhsd.tex}}
+\caption{TukeyHSD statistical post-hoc test for Age and Race Correlation.}
+\label{Tab:thsd_AR}
+\end{table}
+
+\begin{table}[H]
+\centering
+\noindent\makebox[\textwidth]{%
+\input{../tables/Age_Sex_tukeyhsd.tex}}
+\caption{TukeyHSD statistical post-hoc test for Age and Sex Correlation.}
+\label{Tab:thsd_AS}
+\end{table}
+    
+\begin{table}[H]
+\centering
+\noindent\makebox[\textwidth]{%
+\input{../tables/Number_of_Charges_Race_tukeyhsd.tex}}
+\caption{TukeyHSD statistical post-hoc test for Number of Charges and Race Correlation.}
+\label{Tab:thsd_NoCR}
+\end{table}
+
+\begin{table}[H]
+\centering
+\noindent\makebox[\textwidth]{%
+\input{../tables/Number_of_Charges_Sex_tukeyhsd.tex}}
+\caption{TukeyHSD statistical post-hoc test for Number of Charges and Sex Correlation.}
+\label{Tab:thsd_NoCS}
+\end{table}
+
+\begin{table}[H]
+\centering
+\noindent\makebox[\textwidth]{%
+\input{../tables/Number_of_Felonies_Race_tukeyhsd.tex}}
+\caption{TukeyHSD statistical post-hoc test for Number of Felonies and Race Correlation.}
+\label{Tab:thsd_NoFR}
+\end{table}
+
+\begin{table}[H]
+\centering
+\noindent\makebox[\textwidth]{%
+\input{../tables/Number_of_Felonies_Sex_tukeyhsd.tex}}
+\caption{TukeyHSD statistical post-hoc test for Number of Felonies and Sex Correlation.}
+\label{Tab:thsd_NoFS}
+\end{table}
+
+\begin{table}[H]
+\centering
+\noindent\makebox[\textwidth]{%
+\input{../tables/Number_of_Misd_Race_tukeyhsd.tex}}
+\caption{TukeyHSD statistical post-hoc test for Number of Misdemeanors and Race Correlation.}
+\label{Tab:thsd_NoMR}
+\end{table}
+
+\begin{table}[H]
+\centering
+\noindent\makebox[\textwidth]{%
+\input{../tables/Number_of_Misd_Sex_tukeyhsd.tex}}
+\caption{TukeyHSD statistical post-hoc test for Number of Misdemeanors and Sex Correlation.}
+\label{Tab:thsd_NoMS}
+\end{table}
+    
     
 \section{Distribution Plots}
 This section diplays distribution plots separated by Race and Sex. For visualization purposes numerical data points that are separated from the median by <<plot\_outliers>> times the median absolute deviation of a distribution were not plotted. Additionally, categorical data values with less than <<plot\_other>>\% of the the total category were added to "other."
